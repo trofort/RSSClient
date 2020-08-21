@@ -126,7 +126,8 @@ class NewsItemCell extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.grey,
                   fontStyle: FontStyle.italic,
-                  fontSize: 12.0
+                  fontSize: 12.0,
+                  decoration: TextDecoration.none
                 ),
               ),
             ),
@@ -140,7 +141,8 @@ class NewsItemCell extends StatelessWidget {
                   DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 12.0
+                      fontSize: 12.0,
+                      decoration: TextDecoration.none
                   ),
                 ),
               )

@@ -27,6 +27,7 @@ class AllChannelsScreen extends StatelessWidget {
                     .map((e) => HTMLService.parseChannelNewsItems(e.body))
                     .expand((element) => element)
                     .toList();
+                  allNews.sort((a, b) => b.pubDate.compareTo(a.pubDate));
                   return ListView(
                     children: allNews.map((e) => NewsItemCell(item: e,)).toList(),
                   );

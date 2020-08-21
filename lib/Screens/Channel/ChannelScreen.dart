@@ -41,6 +41,7 @@ class ChannelScreen extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot<NetworkService.Response> snapshot) {
               if (snapshot.hasData) {
                 List<RSSNewsItemModel> news = HTMLService.parseChannelNewsItems(snapshot.data.body);
+                news.sort((a, b) => b.pubDate.compareTo(a.pubDate));
                 return SliverList(
                   delegate: SliverChildListDelegate(
                       news.map((item) => NewsItemCell(item: item)).toList()
