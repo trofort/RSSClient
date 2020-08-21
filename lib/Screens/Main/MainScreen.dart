@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rss_client/Exceptions/HTMLExceptions/HTMLException.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
-import 'package:rss_client/Screens/Main/ChannelGridCell.dart';
+import 'package:rss_client/Screens/Main/Cells/AllChannelsGridCell.dart';
+import 'package:rss_client/Screens/Main/Cells/ChannelGridCell.dart';
 import 'package:rss_client/Services/DataBaseService.dart';
 import 'package:rss_client/Services/RSSParserService.dart';
 import 'package:rss_client/Views/CustomDialogs/AddSourceDialog.dart';
@@ -36,16 +37,9 @@ class _MainState extends State<MainScreen> {
         future: DataBaseService.shared.getAllChannels(),
         builder: (BuildContext context, AsyncSnapshot<List<RSSChannelModel>> snapshot) {
           if (snapshot.hasData) {
-            List<Widget> gridChildren = List<Widget>();
-            gridChildren.addAll(snapshot.data.map((e) => ChannelGridCell(channel: e)).toList());
-
-            if (_haveLoadingItem) {
-              gridChildren.add(SpinKitRotatingPlain(color: Colors.black12));
-            }
-
             return GridView.count(
               crossAxisCount: 2,
-              children: gridChildren,
+              children: _generateGridChildren(snapshot.data),
             );
           } else {
             return SpinKitWave(
@@ -55,6 +49,24 @@ class _MainState extends State<MainScreen> {
         },
       )
     );
+  }
+
+  List<Widget> _generateGridChildren(List<RSSChannelModel> channels) {
+    List<Widget> gridChildren = List<Widget>();
+
+    final channelCells = channels.map((e) => ChannelGridCell(channel: e)).toList();
+
+    if (channelCells.length > 1) {
+      gridChildren.add(AllChannelsGridCell());
+    }
+
+    gridChildren.addAll(channelCells);
+
+    if (_haveLoadingItem) {
+      gridChildren.add(SpinKitRotatingPlain(color: Colors.black12));
+    }
+
+    return gridChildren;
   }
 
   void _showEnterUrlPopUp() async {
