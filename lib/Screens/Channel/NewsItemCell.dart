@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:rss_client/Router/Router.dart';
+import 'package:intl/intl.dart';
 
 class NewsItemCell extends StatelessWidget {
 
@@ -40,9 +41,9 @@ class NewsItemCell extends StatelessWidget {
 
   List<Widget> _getColumnChildren() {
     if (item.imageUrl.isEmpty) {
-      return [_generateTextPart()];
+      return [_generateTextPart(), _generateBottomPart()];
     } else {
-      return [_generateImagePart(), _generateTextPart()];
+      return [_generateImagePart(), _generateTextPart(), _generateBottomPart()];
     }
   }
 
@@ -107,6 +108,45 @@ class NewsItemCell extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _generateBottomPart() {
+    return Container(
+      height: 30.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Uri.tryParse(item.link).host,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 12.0
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                padding: EdgeInsets.only(right: 4.0),
+                child: Text(
+                  DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12.0
+                  ),
+                ),
+              )
+            ),
+          )
+        ],
       ),
     );
   }
