@@ -17,52 +17,50 @@ class MainScreen extends StatefulWidget {
 class _MainState extends State<MainScreen> {
 
   bool _haveLoadingItem = false;
+  bool _isEdit = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('RSS Client'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: _showEnterUrlPopUp,
-            child: new Icon(
-              Icons.add,
-              size: 24.0,
-            ))
-        ],
-      ),
-      body: 
-      FutureBuilder(
-        future: DataBaseService.shared.getAllChannels(),
-        builder: (BuildContext context, AsyncSnapshot<List<RSSChannelModel>> snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data.isNotEmpty) {
-              return GridView.count(
-                crossAxisCount: 2,
-                children: _generateGridChildren(snapshot.data),
-              );
-            } else {
-              return EmptyDataView(
-                title: 'No channels',
-                subtitle: 'Please, add channels',
-              );
-            }
-          } else {
-            return SpinKitWave(
-              color: Colors.black,
-            );
-          }
-        },
-      )
+    return FutureBuilder(
+      future: DataBaseService.shared.getAllChannels(),
+      builder: (BuildContext context, AsyncSnapshot<List<RSSChannelModel>> snapshot) {
+        return Scaffold(
+          appBar: AppBar(
+           titleSpacing: 0.0,
+           automaticallyImplyLeading: false,
+           centerTitle: true,
+           title: Row(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.center,
+             children: _getAppBarTitleView(snapshot),
+           ),
+           actions: <Widget>[
+             FlatButton(
+               onPressed: _showEnterUrlPopUp,
+               child: new Icon(
+                 Icons.add,
+                 size: 24.0,
+               ))
+           ],
+          ),
+          body: _generateScaffoldBody(snapshot),
+        );
+      },
     );
   }
 
   List<Widget> _generateGridChildren(List<RSSChannelModel> channels) {
     List<Widget> gridChildren = List<Widget>();
 
-    final channelCells = channels.map((e) => ChannelGridCell(channel: e)).toList();
+    final channelCells = channels.map((e) =>
+        ChannelGridCell(
+          channel: e,
+          isEdit: _isEdit,
+          onPressedRemoveButton: (channel) async {
+            await DataBaseService.shared.removeChannel(channel);
+            setState(() {});
+          },))
+        .toList();
 
     if (channelCells.length > 1) {
       gridChildren.add(AllChannelsGridCell());
@@ -75,6 +73,52 @@ class _MainState extends State<MainScreen> {
     }
 
     return gridChildren;
+  }
+
+  List<Widget> _getAppBarTitleView(AsyncSnapshot<List<RSSChannelModel>> snapshot) {
+    List<Widget> titleView = List<Widget>();
+
+    if (snapshot.hasData) {
+      if (snapshot.data.isNotEmpty) {
+        titleView.add(FlatButton(
+          onPressed: _editOnPressed,
+          child: Text(
+            _isEdit ? 'Done' : 'Edit',
+          ),
+        ));
+      }
+    }
+
+    titleView.add(
+        Expanded(
+          child: Center(
+            child: Text('RSS Client'),
+          ),
+        )
+    );
+
+    return titleView;
+  }
+
+  Widget _generateScaffoldBody(AsyncSnapshot<List<RSSChannelModel>> snapshot) {
+    if (snapshot.hasData) {
+      if (snapshot.data.isNotEmpty) {
+        return GridView.count(
+          crossAxisCount: 2,
+          children: _generateGridChildren(snapshot.data),
+        );
+      } else {
+        _isEdit = false;
+        return EmptyDataView(
+          title: 'No channels',
+          subtitle: 'Please, add channels',
+        );
+      }
+    } else {
+      return SpinKitWave(
+        color: Colors.black,
+      );
+    }
   }
 
   void _showEnterUrlPopUp() async {
@@ -106,5 +150,11 @@ class _MainState extends State<MainScreen> {
         },
       )
     );
+  }
+
+  void _editOnPressed() {
+    setState(() {
+      _isEdit = !_isEdit;
+    });
   }
 }

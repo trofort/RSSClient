@@ -24,7 +24,7 @@ class DataBaseService {
         join(await getDatabasesPath(), 'channels_db.db'),
         onCreate: (db, version) {
           return db.execute(
-              "CREATE TABLE channels(title Text, source TEXT PRIMARY KEY, description TEXT, imageUrl TEXT)"
+              "CREATE TABLE channels(${RSSChannelModel.entityModel})"
           );
         },
         version: 1,
@@ -45,6 +45,20 @@ class DataBaseService {
       );
     } catch (_) {
       throw DataBaseException.cannotInsertNewItemToDB;
+    }
+  }
+
+  Async.Future<void> removeChannel(RSSChannelModel channel) async {
+    try {
+      final Database db = await _getDB();
+
+      await db.delete(
+        'channels',
+        where: 'source = ?',
+        whereArgs: [channel.source]
+      );
+    } catch (_) {
+      throw DataBaseException.cannotRemoveItemFromDB;
     }
   }
 

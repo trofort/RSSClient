@@ -3,6 +3,8 @@ import 'package:rss_client/Models/RSSNewsItemModel.dart';
 
 class RSSChannelModel {
 
+  static final String entityModel = 'title Text, source TEXT PRIMARY KEY, description TEXT, imageUrl TEXT';
+
   final String title;
   final String source;
   final String description;
