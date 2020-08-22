@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,6 +16,7 @@ class ChannelGridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(channel.imageUrl);
     return new GestureDetector(
       onTap: () => Navigator.pushNamed(context, Router.channel, arguments: channel),
       child: new Card(
@@ -25,9 +27,25 @@ class ChannelGridCell extends StatelessWidget {
               child: new Hero(
                 tag: channel.source,
                 child: CachedNetworkImage(
-                  placeholder: (context, url) => SpinKitRotatingPlain(
-                    color: Colors.black12,
-                  ),
+                  placeholder: (context, url) {
+                    if (url.isNotEmpty) {
+                      return SpinKitRotatingPlain(
+                        color: Colors.black12,
+                      );
+                    } else {
+                      return AutoSizeText(
+                        Uri.parse(channel.source).host,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 32.0,
+                          decoration: TextDecoration.none,
+                          fontFamily: '.SF UI Text'
+                        ),
+                      );
+                    }
+                  },
                   imageUrl: channel.imageUrl,
                   fit: BoxFit.fitWidth,
                   height: double.infinity,

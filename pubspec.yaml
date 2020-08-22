@@ -32,6 +32,7 @@ dependencies:
   flutter_spinkit:
   cached_network_image:
   flutter_webview_plugin:
+  auto_size_text:
   path:
 
   # The following adds the Cupertino Icons font to your application.
