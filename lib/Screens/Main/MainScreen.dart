@@ -8,6 +8,7 @@ import 'package:rss_client/Services/RSSParserService.dart';
 import 'package:rss_client/Views/CustomDialogs/AddSourceDialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Views/CustomDialogs/ErrorDialog.dart';
+import 'package:rss_client/Views/EmptyDataView/EmptyDataView.dart';
 
 class MainScreen extends StatefulWidget {
   createState() => _MainState();
@@ -37,10 +38,17 @@ class _MainState extends State<MainScreen> {
         future: DataBaseService.shared.getAllChannels(),
         builder: (BuildContext context, AsyncSnapshot<List<RSSChannelModel>> snapshot) {
           if (snapshot.hasData) {
-            return GridView.count(
-              crossAxisCount: 2,
-              children: _generateGridChildren(snapshot.data),
-            );
+            if (snapshot.data.isNotEmpty) {
+              return GridView.count(
+                crossAxisCount: 2,
+                children: _generateGridChildren(snapshot.data),
+              );
+            } else {
+              return EmptyDataView(
+                title: 'No channels',
+                subtitle: 'Please, add channels',
+              );
+            }
           } else {
             return SpinKitWave(
               color: Colors.black,

@@ -16,7 +16,6 @@ class ChannelGridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(channel.imageUrl);
     return new GestureDetector(
       onTap: () => Navigator.pushNamed(context, Router.channel, arguments: channel),
       child: new Card(
