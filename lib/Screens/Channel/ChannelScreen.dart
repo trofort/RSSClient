@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:rss_client/Screens/Channel/NewsItemCell.dart';
+import 'package:rss_client/Services/DataBase/Storages/NewsItemStorage.dart';
 import 'package:rss_client/Services/HTMLService.dart';
 import 'NewsItemCell.dart';
 import 'package:http/http.dart' as NetworkService;
@@ -57,10 +58,10 @@ class ChannelScreen extends StatelessWidget {
             ),
           ),
           FutureBuilder(
-            future: NetworkService.get(channel.source),
-            builder: (BuildContext context, AsyncSnapshot<NetworkService.Response> snapshot) {
+            future: _getContent(channel),
+            builder: (BuildContext context, AsyncSnapshot<List<RSSNewsItemModel>> snapshot) {
               if (snapshot.hasData) {
-                List<RSSNewsItemModel> news = HTMLService.parseChannelNewsItems(snapshot.data.body);
+                List<RSSNewsItemModel> news = snapshot.data;
                 news.sort((a, b) => b.pubDate.compareTo(a.pubDate));
                 return SliverList(
                   delegate: SliverChildListDelegate(
@@ -82,6 +83,13 @@ class ChannelScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<List<RSSNewsItemModel>> _getContent(RSSChannelModel channel) async {
+    final String bodyData = (await NetworkService.get(channel.source)).body;
+    final List<RSSNewsItemModel> news = HTMLService.parseChannelNewsItems(bodyData);
+    await NewsItemStorage.insertAll(news);
+    return await NewsItemStorage.getAll(channel);
   }
 
 }

@@ -26,6 +26,15 @@ class RSSChannelModel {
     };
   }
 
+  factory RSSChannelModel.fromDBMap(Map<String, dynamic> dbMap) {
+    return RSSChannelModel(
+        title: dbMap['title'],
+        description: dbMap['description'],
+        imageUrl: dbMap['imageUrl'],
+        source: dbMap['source']
+    );
+  }
+
   factory RSSChannelModel.fromXML(XmlElement element, String source) {
     return new RSSChannelModel(
       title: element.findElements('title').first.text,

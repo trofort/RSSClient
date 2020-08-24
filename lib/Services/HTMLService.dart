@@ -39,7 +39,7 @@ class HTMLService {
           .findElements('channel').first;
       return element
           .findElements('item')
-          .map((e) => RSSNewsItemModel.fromXML(e))
+          .map((e) => RSSNewsItemModel.fromXML(e, element.findElements('title').first.text))
           .toList();
     } catch (_) {
       throw HTMLException.cantParseNewsItems;
