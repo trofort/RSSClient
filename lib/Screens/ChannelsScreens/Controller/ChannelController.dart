@@ -21,7 +21,7 @@ class ChannelController {
           bodyData);
 
       final List<RSSNewsItemModel> newsToInsert = news.where((element) =>
-          savedNews
+          !savedNews
               .map((e) => e.link)
               .toList()
               .contains(element.link)
