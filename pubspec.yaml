@@ -31,7 +31,7 @@ dependencies:
   sqflite:
   flutter_spinkit:
   cached_network_image:
-  flutter_webview_plugin:
+  webview_flutter: ^0.3.3
   auto_size_text:
   path:
   share:

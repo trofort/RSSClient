@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:share/share.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     final RSSNewsItemModel newsItem =  ModalRoute.of(context).settings.arguments;
-    return WebviewScaffold(
-      url: newsItem.link,
+    return Scaffold(
       appBar: AppBar(
         title: Text(newsItem.title),
         actions: <Widget>[
@@ -19,6 +18,10 @@ class NewsWebViewScreen extends StatelessWidget {
             onPressed: () => Share.share("Check this news: ${newsItem.link}"),
           )
         ],
+      ),
+      body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: newsItem.link,
       ),
     );
   }
