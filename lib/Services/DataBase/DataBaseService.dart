@@ -34,14 +34,18 @@ class DataBaseService {
           await db.execute("CREATE TABLE ${TableNames.newsItems}(${RSSNewsItemModel.entityModel})");
         },
         onUpgrade: (db, oldVersion, newVersion) async {
+          print(oldVersion);
           if (oldVersion <= 1) {
             await db.execute("CREATE TABLE ${TableNames.newsItems}(${RSSNewsItemModel.entityModel})");
-          }
-          if (oldVersion <= 2) {
-            await db.execute("ALTER TABLE ${TableNames.newsItems} ADD COLUMN source TEXT");
-          }
-          if (oldVersion <= 3) {
-            await db.execute("ALTER TABLE ${TableNames.newsItems} ADD COLUMN isFavourite INTEGER");
+          } else {
+            if (oldVersion <= 2) {
+              await db.execute(
+                  "ALTER TABLE ${TableNames.newsItems} ADD COLUMN source TEXT");
+            }
+            if (oldVersion <= 3) {
+              await db.execute("ALTER TABLE ${TableNames
+                  .newsItems} ADD COLUMN isFavourite INTEGER");
+            }
           }
         },
         version: 4,

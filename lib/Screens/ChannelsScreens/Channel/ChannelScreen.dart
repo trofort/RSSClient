@@ -29,7 +29,10 @@ class _ChannelScreenState extends State<ChannelScreen> {
               pinned: true,
               expandedHeight: 250.0,
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(channel.title),
+                title: Text(
+                  channel.title,
+                  maxLines: 1,
+                ),
                 background: Hero(
                     tag: channel.source,
                     child: CachedNetworkImage(
