@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class RSSNewsItemModel {
 
-  static final String entityModel = 'title Text, link TEXT PRIMARY KEY, description TEXT, imageUrl TEXT, pubDate TEXT, source TEXT';
+  static final String entityModel = 'title Text, link TEXT PRIMARY KEY, description TEXT, imageUrl TEXT, pubDate TEXT, source TEXT, isFavourite INTEGER';
 
   final String title;
   final String link;
@@ -11,6 +11,7 @@ class RSSNewsItemModel {
   final String description;
   final String imageUrl;
   final String source;
+  bool isFavourite;
 
   RSSNewsItemModel({
     this.title,
@@ -18,7 +19,8 @@ class RSSNewsItemModel {
     this.pubDate,
     this.description,
     this.imageUrl,
-    this.source
+    this.source,
+    this.isFavourite
   });
 
   Map<String, dynamic> toMap() {
@@ -28,7 +30,8 @@ class RSSNewsItemModel {
       'description': description,
       'imageUrl': imageUrl,
       'pubDate': DateFormat("dd.MM.yyyy HH:mm").format(pubDate),
-      'source': source
+      'source': source,
+      'isFavourite': isFavourite ? 1 : 0
     };
   }
 
@@ -39,7 +42,8 @@ class RSSNewsItemModel {
       pubDate: DateFormat("dd.MM.yyyy HH:mm").parse(dbMap['pubDate']),
       description: dbMap['description'],
       imageUrl: dbMap['imageUrl'],
-      source: dbMap['source']
+      source: dbMap['source'],
+      isFavourite: dbMap['isFavourite'] == 1
     );
   }
 
@@ -52,7 +56,8 @@ class RSSNewsItemModel {
       pubDate: new DateFormat("E, dd MMM yyyy HH:mm:ss ZZ").parse(element.findElements('pubDate').first.text),
       description: description.replaceAll(RegExp(r'<[^>]*>'), ''),
       imageUrl: imageUrlMatch == null ? '' : imageUrlMatch.group(1),
-      source: source
+      source: source,
+      isFavourite: false
     );
   }
 }

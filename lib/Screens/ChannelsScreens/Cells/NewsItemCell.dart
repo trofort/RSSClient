@@ -4,8 +4,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:rss_client/Router/Router.dart';
 import 'package:intl/intl.dart';
+import 'package:rss_client/Services/DataBase/Storages/NewsItemStorage.dart';
 
-class NewsItemCell extends StatelessWidget {
+class NewsItemCell extends StatefulWidget {
 
   final RSSNewsItemModel item;
 
@@ -13,6 +14,11 @@ class NewsItemCell extends StatelessWidget {
     Key key,
     this.item
   }): super(key: key);
+
+  createState() => _NewsItemCellState();
+}
+
+class _NewsItemCellState extends State<NewsItemCell> {
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class NewsItemCell extends StatelessWidget {
         maxHeight: double.infinity
       ),
       child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, Router.newsWebView, arguments: item),
+        onTap: () => Navigator.pushNamed(context, Router.newsWebView, arguments: widget.item),
         child: Container(
             color: Colors.white,
             padding: EdgeInsets.only(
@@ -40,7 +46,7 @@ class NewsItemCell extends StatelessWidget {
   }
 
   List<Widget> _getColumnChildren() {
-    if (item.imageUrl.isEmpty) {
+    if (widget.item.imageUrl.isEmpty) {
       return [_generateTextPart(), _generateBottomPart()];
     } else {
       return [_generateImagePart(), _generateTextPart(), _generateBottomPart()];
@@ -52,23 +58,50 @@ class NewsItemCell extends StatelessWidget {
       alignment: Alignment.centerRight,
       padding: EdgeInsets.only(bottom: 16.0),
       height: 200.0,
-      child: ClipRRect(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4.0),
-          bottomLeft: Radius.circular(4.0)
-        ),
-        child: CachedNetworkImage(
-          placeholder: (context, url) => Container(
-            width: 100.0,
-            child: SpinKitRotatingPlain(
-              color: Colors.black12,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: FlatButton(
+                onPressed: () async {
+                    widget.item.isFavourite = !widget.item.isFavourite;
+                    await NewsItemStorage.update(widget.item);
+                    setState((){});
+                },
+                child: Icon(
+                  widget.item.isFavourite ? Icons.star : Icons.star_border,
+                  color: Colors.black,
+                ),
+              ),
+            )
+          ),
+          Expanded(
+            flex: 4,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: ClipRRect(
+                clipBehavior: Clip.antiAlias,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(4.0),
+                    bottomLeft: Radius.circular(4.0)
+                ),
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => Container(
+                    width: 100.0,
+                    child: SpinKitRotatingPlain(
+                      color: Colors.black12,
+                    ),
+                  ) ,
+                  imageUrl: widget.item.imageUrl,
+                  fit: BoxFit.fitHeight,
+                  height: 200.0,
+                ),
+              ),
             ),
-          ) ,
-          imageUrl: item.imageUrl,
-          fit: BoxFit.fitHeight,
-          height: 200.0,
-        )
+          ),
+        ],
       ),
     );
   }
@@ -86,7 +119,7 @@ class NewsItemCell extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              item.title,
+              widget.item.title,
               style: TextStyle(
                   fontSize: 19.0,
                   fontWeight: FontWeight.bold,
@@ -97,7 +130,7 @@ class NewsItemCell extends StatelessWidget {
             Container(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  item.description,
+                  widget.item.description,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 12.0,
@@ -122,7 +155,7 @@ class NewsItemCell extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                Uri.tryParse(item.link).host,
+                Uri.tryParse(widget.item.link).host,
                 style: TextStyle(
                   color: Colors.grey,
                   fontStyle: FontStyle.italic,
@@ -138,7 +171,7 @@ class NewsItemCell extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(right: 4.0),
                 child: Text(
-                  DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),
+                  DateFormat('dd.MM.yyyy HH:mm').format(widget.item.pubDate),
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 12.0,

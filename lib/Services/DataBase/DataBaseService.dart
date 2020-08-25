@@ -12,7 +12,6 @@ class TableNames {
   static final String newsItems = 'newsItems';
 }
 
-
 class DataBaseService {
 
   static DataBaseService shared = new DataBaseService();
@@ -41,8 +40,11 @@ class DataBaseService {
           if (oldVersion <= 2) {
             await db.execute("ALTER TABLE ${TableNames.newsItems} ADD COLUMN source TEXT");
           }
+          if (oldVersion <= 3) {
+            await db.execute("ALTER TABLE ${TableNames.newsItems} ADD COLUMN isFavourite INTEGER");
+          }
         },
-        version: 3,
+        version: 4,
       );
     } catch (_) {
       throw DataBaseException.cannotCreateDB;
@@ -74,6 +76,21 @@ class DataBaseService {
       );
     } catch (_) {
       throw DataBaseException.cannotRemoveItemFromDB;
+    }
+  }
+
+  Async.Future<void> update(String tableName, Map<String, dynamic> dbMap, String where, List<dynamic> whereArgs) async {
+    try {
+      final Database db = await _getDB();
+
+      await db.update(
+        tableName,
+        dbMap,
+        where: where,
+        whereArgs: whereArgs
+      );
+    } catch (_) {
+      throw DataBaseException.cannotUpdateItemFromDB;
     }
   }
 

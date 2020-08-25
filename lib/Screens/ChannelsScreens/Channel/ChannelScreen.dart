@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
-import 'package:rss_client/Screens/Channel/NewsItemCell.dart';
-import 'package:rss_client/Services/DataBase/Storages/NewsItemStorage.dart';
-import 'package:rss_client/Services/HTMLService.dart';
-import 'NewsItemCell.dart';
-import 'package:http/http.dart' as NetworkService;
+import 'package:rss_client/Screens/ChannelsScreens/Controller/ChannelController.dart';
+import '../Cells/NewsItemCell.dart';
+
 
 class ChannelScreen extends StatelessWidget {
 
+  ChannelController _controller = ChannelController();
+
   @override
   Widget build(BuildContext context) {
+    _controller.context = context;
     RSSChannelModel channel = ModalRoute.of(context).settings.arguments;
     return Container(
       color: Colors.white,
@@ -58,7 +59,7 @@ class ChannelScreen extends StatelessWidget {
             ),
           ),
           FutureBuilder(
-            future: _getContent(channel),
+            future: _controller.getContent(channel),
             builder: (BuildContext context, AsyncSnapshot<List<RSSNewsItemModel>> snapshot) {
               if (snapshot.hasData) {
                 List<RSSNewsItemModel> news = snapshot.data;
@@ -83,13 +84,6 @@ class ChannelScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<List<RSSNewsItemModel>> _getContent(RSSChannelModel channel) async {
-    final String bodyData = (await NetworkService.get(channel.source)).body;
-    final List<RSSNewsItemModel> news = HTMLService.parseChannelNewsItems(bodyData);
-    await NewsItemStorage.insertAll(news);
-    return await NewsItemStorage.getAll(channel);
   }
 
 }

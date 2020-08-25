@@ -26,4 +26,20 @@ class NewsItemStorage {
     return maps.map((element) => RSSNewsItemModel.fromDBMap(element)).toList();
   }
 
+  static Future<List<RSSNewsItemModel>> getAllFavourite() async {
+    final List<Map<String, dynamic>> maps = await DataBaseService.shared.getAllQuery(
+        TableNames.newsItems,
+        where: 'isFavourite = 1',
+    );
+    return maps.map((element) => RSSNewsItemModel.fromDBMap(element)).toList();
+  }
+
+  static Future<void> update(RSSNewsItemModel newsItem) async {
+    await DataBaseService.shared.update(
+      TableNames.newsItems,
+      newsItem.toMap(),
+      'link = ?',
+      [newsItem.link]
+    );
+  }
 }
