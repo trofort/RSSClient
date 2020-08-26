@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 class ErrorDialog extends StatelessWidget {
 
   final String message;
@@ -11,9 +14,16 @@ class ErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(16.0),
-      title: Text('Error').tr(),
+    return PlatformAlertDialog(
+      android: (_) => MaterialAlertDialogData(
+        contentPadding: EdgeInsets.all(16.0)
+      ),
+      title: Text(
+        'error',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),
+      ).tr(),
       content: Text(
         message,
         style: TextStyle(
@@ -23,7 +33,13 @@ class ErrorDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Ok').tr(),
+          child: Text(
+            'ok',
+            style: TextStyle(
+              color: CupertinoColors.activeBlue,
+              fontWeight: FontWeight.bold
+            ),
+          ).tr(),
           onPressed: () => Navigator.pop(context),
         )
       ],
