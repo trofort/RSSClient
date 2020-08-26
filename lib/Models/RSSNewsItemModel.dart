@@ -53,7 +53,7 @@ class RSSNewsItemModel {
     return new RSSNewsItemModel(
       title: element.findElements('title').first.text,
       link: element.findElements('link').first.text,
-      pubDate: new DateFormat("E, dd MMM yyyy HH:mm:ss ZZ").parse(element.findElements('pubDate').first.text),
+      pubDate: new DateFormat("EEE, dd MMM yyyy HH:mm:ss ZZ", "en_US").parse(element.findElements('pubDate').first.text),
       description: description.replaceAll(RegExp(r'<[^>]*>'), ''),
       imageUrl: imageUrlMatch == null ? '' : imageUrlMatch.group(1),
       source: source,
