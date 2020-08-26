@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NewsWebViewScreen extends StatelessWidget {
 
@@ -15,7 +16,7 @@ class NewsWebViewScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.share),
             iconSize: 24.0,
-            onPressed: () => Share.share("Check this news: ${newsItem.link}"),
+            onPressed: () => Share.share('check_this_news_@'.tr(args: [newsItem.link])),
           )
         ],
       ),

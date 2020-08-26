@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rss_client/Router/Router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllChannelsGridCell extends StatelessWidget {
 
@@ -11,13 +12,13 @@ class AllChannelsGridCell extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Center(
             child: Text(
-              'ALL',
+              'all',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 64.0,
                 color: Colors.black
               ),
-            ),
+            ).tr(),
         ),
       ),
     );

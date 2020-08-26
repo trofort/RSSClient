@@ -8,6 +8,7 @@ import 'package:rss_client/Services/DataBase/Storages/ChannelStorage.dart';
 import 'package:rss_client/Views/CustomDialogs/AddSourceDialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Views/EmptyDataView/EmptyDataView.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MainScreen extends StatefulWidget {
 
@@ -95,7 +96,7 @@ class _MainState extends State<MainScreen> {
             _isEdit = !_isEdit;
           }),
           child: Text(
-            _isEdit ? 'Done' : 'Edit',
+            _isEdit ? 'done'.tr() : 'edit'.tr(),
           ),
         ));
       }
@@ -104,7 +105,7 @@ class _MainState extends State<MainScreen> {
     titleView.add(
         Expanded(
           child: Center(
-            child: Text('RSS Client'),
+            child: Text('rss_client').tr(),
           ),
         )
     );
@@ -122,8 +123,8 @@ class _MainState extends State<MainScreen> {
       } else {
         _isEdit = false;
         return EmptyDataView(
-          title: 'No channels',
-          subtitle: 'Please, add channels',
+          title: 'no_channels'.tr(),
+          subtitle: 'please_add_channels'.tr(),
         );
       }
     } else {

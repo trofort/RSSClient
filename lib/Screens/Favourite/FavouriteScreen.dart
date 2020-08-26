@@ -4,13 +4,14 @@ import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:rss_client/Screens/ChannelsScreens/Cells/NewsItemCell.dart';
 import 'package:rss_client/Services/DataBase/Storages/NewsItemStorage.dart';
 import 'package:rss_client/Views/EmptyDataView/EmptyDataView.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FavouriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favourite'),
+        title: Text('favourite').tr(),
       ),
       body: FutureBuilder(
         future: NewsItemStorage.getAllFavourite(),
@@ -22,8 +23,8 @@ class FavouriteScreen extends StatelessWidget {
               );
             } else {
               return EmptyDataView(
-                title: 'No Favourite News',
-                subtitle: 'You can add them by tapping on star',
+                title: 'no_favourite_news'.tr(),
+                subtitle: 'you_can_add_them_by_tapping_on_star_icon'.tr(),
               );
             }
           } else {

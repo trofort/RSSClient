@@ -5,6 +5,7 @@ import 'package:rss_client/Models/RSSNewsItemModel.dart';
 import 'package:rss_client/Screens/ChannelsScreens/Cells/NewsItemCell.dart';
 import 'package:rss_client/Screens/ChannelsScreens/Controller/ChannelController.dart';
 import 'package:rss_client/Services/DataBase/Storages/ChannelStorage.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AllChannelsScreen extends StatefulWidget {
 
@@ -21,7 +22,7 @@ class _AllChannelsScreenState extends State<AllChannelsScreen> {
     _controller.context = context;
     return Scaffold(
       appBar: AppBar(
-        title: Text('All')
+        title: Text('all').tr()
       ),
       body: RefreshIndicator(
         onRefresh: () async { setState(() {}); },

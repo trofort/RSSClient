@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddSourceDialog extends StatefulWidget {
 
@@ -24,12 +25,12 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
   Widget build(BuildContext context) {
     return new AlertDialog(
       contentPadding: EdgeInsets.all(16.0),
-      title: new Text('Add Rss Channel'),
+      title: new Text('add_rss_channel').tr(),
       content: new TextField(
         autocorrect: false,
         controller: _controller,
         decoration: new InputDecoration(
-          labelText: "Enter Channel's Url",
+          labelText: "enter_channels_url".tr(),
           errorText: _isValid ? null : _checkIsValid()
         ),
       ),
@@ -47,7 +48,7 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
                 widget.addOnTapped(_controller.text.trim());
               }
             },
-            child: new Text('Add')
+            child: new Text('add').tr()
         ),
         new FlatButton(
             onPressed: () {
@@ -56,7 +57,7 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
                 widget.cancelOnTapped();
               }
             },
-            child: new Text('Cancel')
+            child: new Text('cancel').tr()
         ),
       ],
     );
@@ -65,11 +66,11 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
   String _checkIsValid() {
     final String text = _controller.text.trim();
     if (text == null || text.isEmpty) {
-      return 'Source url is empty!';
+      return 'source_url_is_empty'.tr();
     }
     final RegExp exp = new RegExp(r"^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$");
     if (!exp.hasMatch(text)) {
-      return 'Please, enter valid url';
+      return 'please_enter_valid_url'.tr();
     }
     return 'isValid';
   }

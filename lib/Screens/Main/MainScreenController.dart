@@ -3,6 +3,7 @@ import 'package:rss_client/Exceptions/HTMLExceptions/HTMLException.dart';
 import 'package:rss_client/Services/DataBase/Storages/ChannelStorage.dart';
 import 'package:rss_client/Services/RSSParserService.dart';
 import 'package:rss_client/Views/CustomDialogs/ErrorDialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MainScreenController {
 
@@ -20,7 +21,7 @@ class MainScreenController {
     } catch (_) {
       await showDialog(
           context: context,
-          child: ErrorDialog(message: 'Network problem')
+          child: ErrorDialog(message: 'network_problem'.tr())
       );
     }
   }
