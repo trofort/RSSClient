@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:rss_client/Exceptions/URLValidationException/URLValidationException.dart';
+import 'package:rss_client/Services/URLValidationService.dart';
 
 class AddSourceDialog extends StatefulWidget {
 
@@ -19,7 +21,7 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
 
   final TextEditingController _controller = new TextEditingController();
 
-  bool _isValid = true;
+  URLValidationException _validationError;
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +33,23 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
         controller: _controller,
         decoration: new InputDecoration(
           labelText: "enter_channels_url".tr(),
-          errorText: _isValid ? null : _checkIsValid()
+          errorText: _validationError == null ? null : _validationError.cause
         ),
       ),
       actions: <Widget>[
         new FlatButton(
             onPressed: () {
-              if (_checkIsValid() != 'isValid') {
-                setState(() {
-                  _isValid = false;
-                });
-                return;
-              }
-              Navigator.pop(context);
-              if (widget.addOnTapped != null) {
-                widget.addOnTapped(_controller.text.trim());
+              try {
+                URLValidationService.isValidUrl(_controller.text);
+                _validationError = null;
+                Navigator.pop(context);
+                if (widget.addOnTapped != null) {
+                  widget.addOnTapped(_controller.text.trim());
+                }
+              } on URLValidationException catch(error) {
+                _validationError = error;
+              } finally {
+                setState(() {});
               }
             },
             child: new Text('add').tr()
@@ -63,15 +67,5 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
     );
   }
 
-  String _checkIsValid() {
-    final String text = _controller.text.trim();
-    if (text == null || text.isEmpty) {
-      return 'source_url_is_empty'.tr();
-    }
-    final RegExp exp = new RegExp(r"^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$");
-    if (!exp.hasMatch(text)) {
-      return 'please_enter_valid_url'.tr();
-    }
-    return 'isValid';
-  }
+
 }
