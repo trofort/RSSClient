@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
@@ -29,9 +30,21 @@ class _ChannelScreenState extends State<ChannelScreen> {
               pinned: true,
               expandedHeight: 250.0,
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  channel.title,
-                  maxLines: 1,
+                title: PlatformWidget(
+                  material: (_, __) => Text(
+                    channel.title,
+                    maxLines: 1,
+                  ),
+                  cupertino: (_, __) => Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        channel.title,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 ),
                 background: Hero(
                     tag: channel.source,

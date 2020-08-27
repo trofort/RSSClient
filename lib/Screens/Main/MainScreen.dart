@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
 import 'package:rss_client/Router/Router.dart';
 import 'package:rss_client/Screens/Main/Cells/AllChannelsGridCell.dart';
@@ -28,30 +29,37 @@ class _MainState extends State<MainScreen> {
     return FutureBuilder(
       future: ChannelStorage.getAll(),
       builder: (BuildContext context, AsyncSnapshot<List<RSSChannelModel>> snapshot) {
-        return Scaffold(
-          appBar: AppBar(
-           titleSpacing: 0.0,
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            android: (_) => MaterialAppBarData(
+              titleSpacing: 0.0,
+              centerTitle: true
+            ),
            automaticallyImplyLeading: false,
-           centerTitle: true,
            title: Row(
              mainAxisAlignment: MainAxisAlignment.start,
              crossAxisAlignment: CrossAxisAlignment.center,
              children: _getAppBarTitleView(snapshot),
            ),
-           actions: <Widget>[
-             IconButton(
-               onPressed: () => Navigator.pushNamed(context, Router.favourite),
-               iconSize: 24.0,
-               icon: Icon(
-                 Icons.star_border,
-               ),
+           trailingActions: <Widget>[
+             Container(
+               width: 35.0,
+               child: PlatformIconButton(
+                 onPressed: () => Navigator.pushNamed(context, Router.favourite),
+                 icon: Icon(
+                   Icons.star_border,
+                 ),
+               )
              ),
-             IconButton(
-               onPressed: _showEnterUrlPopUp,
-               iconSize: 24.0,
-               icon: Icon(
-                 Icons.add,
-               ))
+             Container(
+               width: 35.0,
+               child: PlatformIconButton(
+                 onPressed: _showEnterUrlPopUp,
+                 icon: Icon(
+                   Icons.add,
+                 )
+               ),
+             )
            ],
           ),
           body: _generateScaffoldBody(snapshot),
@@ -74,12 +82,11 @@ class _MainState extends State<MainScreen> {
         stackChildren.add(
           Align(
             alignment: Alignment.topRight,
-            child: IconButton(
+            child: PlatformIconButton(
               onPressed: () async {
                 await ChannelStorage.remove(e);
                 setState(() {});
               },
-              iconSize: _isEdit ? 24.0 : 0.0,
               icon: Icon(
                 Icons.do_not_disturb_on,
                 color: Colors.red,
