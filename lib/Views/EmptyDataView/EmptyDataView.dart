@@ -23,10 +23,12 @@ class EmptyDataView extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text(
                 title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32.0,
-                    color: Colors.black
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32.0,
+                  color: Colors.black,
+                  decoration: TextDecoration.none
                 ),
               ),
             ),
@@ -34,9 +36,12 @@ class EmptyDataView extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text(
                 subtitle,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 17.0
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none
                 ),
               ),
             )
