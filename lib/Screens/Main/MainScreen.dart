@@ -63,15 +63,34 @@ class _MainState extends State<MainScreen> {
   List<Widget> _generateGridChildren(List<RSSChannelModel> channels) {
     List<Widget> gridChildren = List<Widget>();
 
-    final channelCells = channels.map((e) =>
-        ChannelGridCell(
+    final channelCells = channels.map((e) {
+      List<Widget> stackChildren = List<Widget>()
+        ..add(ChannelGridCell(
           channel: e,
           isEdit: _isEdit,
-          onPressedRemoveButton: (channel) async {
-            await ChannelStorage.remove(channel);
-            setState(() {});
-          },))
-        .toList();
+        ));
+
+      if (_isEdit) {
+        stackChildren.add(
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () async {
+                await ChannelStorage.remove(e);
+                setState(() {});
+              },
+              iconSize: _isEdit ? 24.0 : 0.0,
+              icon: Icon(
+                Icons.do_not_disturb_on,
+                color: Colors.red,
+              ),
+            ),
+          ),
+        );
+      }
+
+      return Stack(children: stackChildren);
+    }).toList();
 
     if (channelCells.length > 1) {
       gridChildren.add(AllChannelsGridCell());
