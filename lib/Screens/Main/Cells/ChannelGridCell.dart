@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Animations/ShakeAnimation.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
-import 'package:rss_client/Router/Router.dart';
+import 'package:rss_client/Routes/Routes.dart';
 
 class ChannelGridCell extends StatelessWidget {
 
@@ -21,7 +21,7 @@ class ChannelGridCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () =>
-          Navigator.pushNamed(context, Router.channel, arguments: channel),
+          Navigator.pushNamed(context, Routes.channel, arguments: channel),
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: ShakeAnimation(

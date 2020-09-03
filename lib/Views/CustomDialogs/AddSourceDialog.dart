@@ -80,7 +80,10 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
                 }
               } on URLValidationException catch(error) {
                 _validationError = error;
-              } finally {
+              } catch (error) {
+                print('Catch: $error');
+              }
+              finally {
                 setState(() {});
               }
             },

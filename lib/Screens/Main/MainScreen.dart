@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:rss_client/Models/RSSChannelModel.dart';
-import 'package:rss_client/Router/Router.dart';
+import 'package:rss_client/Routes/Routes.dart';
 import 'package:rss_client/Screens/Main/Cells/AllChannelsGridCell.dart';
 import 'package:rss_client/Screens/Main/Cells/ChannelGridCell.dart';
 import 'package:rss_client/Screens/Main/MainScreenController.dart';
@@ -45,7 +45,7 @@ class _MainState extends State<MainScreen> {
              Container(
                width: 35.0,
                child: PlatformIconButton(
-                 onPressed: () => Navigator.pushNamed(context, Router.favourite),
+                 onPressed: () => Navigator.pushNamed(context, Routes.favourite),
                  icon: Icon(
                    Icons.star_border,
                  ),

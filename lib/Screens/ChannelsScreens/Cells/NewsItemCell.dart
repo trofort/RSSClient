@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rss_client/Models/RSSNewsItemModel.dart';
-import 'package:rss_client/Router/Router.dart';
+import 'package:rss_client/Routes/Routes.dart';
 import 'package:intl/intl.dart';
 import 'package:rss_client/Services/DataBase/Storages/NewsItemStorage.dart';
 
@@ -28,7 +28,7 @@ class _NewsItemCellState extends State<NewsItemCell> {
         maxHeight: double.infinity
       ),
       child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, Router.newsWebView, arguments: widget.item),
+        onTap: () => Navigator.pushNamed(context, Routes.newsWebView, arguments: widget.item),
         child: Container(
             color: Colors.white,
             padding: EdgeInsets.only(

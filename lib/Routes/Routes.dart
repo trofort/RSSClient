@@ -5,7 +5,7 @@ import 'package:rss_client/Screens/Favourite/FavouriteScreen.dart';
 import 'package:rss_client/Screens/Main/MainScreen.dart';
 import 'package:rss_client/Screens/NewsWebViewScreen/NewsWebViewScreen.dart';
 
-class Router {
+class Routes {
 
   static final String main = '/';
   static final String channel = '/channel';
